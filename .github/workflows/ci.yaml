@@ -1,0 +1,23 @@
+name: CI-sorted-strings
+
+on: [push, pull_request]
+
+jobs:
+  sorting:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Setup docker buildx
+        uses: docker/setup-buildx-action@v1
+        
+      - name: Build and Load Docker Image
+        uses: docker/build-push-action@v3
+        with:
+          load: true
+          tags: sisl-check
+
+      - name: Run string sorting check
+        run: |
+          docker run -i --rm sisl-check
